@@ -111,12 +111,12 @@
     </div>
     <button class="music-btn" id="playPauseBtn">▶</button>
   </div>
-  <!-- YouTube iframe embed - hidden but functional -->
-  <iframe id="ytFrame"
-    src="https://www.youtube.com/embed/IhIiusMJsgU?autoplay=1&loop=1&playlist=IhIiusMJsgU&start=60&controls=0&mute=0&enablejsapi=1&origin=null"
-    allow="autoplay; encrypted-media"
-    style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;top:0;left:0;"
-    frameborder="0">
+  <!-- SoundCloud embed - visible mini player, reliable autoplay -->
+  <iframe id="scFrame"
+    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/maherzainmusic/ramadan-live-acoustic-1&color=%231e40af&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"
+    style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;right:0;"
+    frameborder="0"
+    allow="autoplay">
   </iframe>
 
   <div id="app-wrapper" class="w-full h-full overflow-auto islamic-pattern" style="background-color: #fef8f0;">
@@ -136,7 +136,7 @@
      <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100"><pattern id="islamic-geo" x="0" y="0" width="20" height="20" patternunits="userSpaceOnUse"><circle cx="10" cy="10" r="8" fill="none" stroke="white" stroke-width="0.5" /><path d="M10 2 L10 18 M2 10 L18 10" stroke="white" stroke-width="0.3" /></pattern><rect width="100%" height="100%" fill="url(#islamic-geo)" /></svg>
     </div>
     <div class="relative z-10 max-w-4xl mx-auto">
-    
+     
      <p class="text-sm tracking-[0.3em] uppercase mb-2 animate-fade-in" style="color: #fef8f0; opacity: 0.8; animation-delay: 0.1s;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
      <h1 class="font-amiri text-3xl md:text-5xl font-bold mb-3 animate-fade-in" style="color: #fef8f0; animation-delay: 0.2s;">Terms &amp; Conditions</h1>
      <div class="flex items-center justify-center gap-4 mb-4 animate-fade-in" style="animation-delay: 0.3s;">
@@ -471,46 +471,40 @@
    </footer>
   </div>
 
+  <script src="https://w.soundcloud.com/player/api.js"></script>
   <script>
+    var scWidget = null;
     var isPlaying = false;
-    var ytFrame = null;
 
     window.addEventListener('load', function() {
-      ytFrame = document.getElementById('ytFrame');
-    });
+      var iframe = document.getElementById('scFrame');
+      scWidget = SC.Widget(iframe);
 
-    function sendYTCommand(func, args) {
-      if (!ytFrame) ytFrame = document.getElementById('ytFrame');
-      ytFrame.contentWindow.postMessage(JSON.stringify({
-        event: 'command',
-        func: func,
-        args: args || []
-      }), '*');
-    }
+      scWidget.bind(SC.Widget.Events.READY, function() {
+        scWidget.setVolume(80);
+        // autoplay sudah di URL, tapi trigger lagi untuk pastikan
+        scWidget.play();
+        isPlaying = true;
+        updateUI();
+      });
 
-    // Listen for messages from YouTube iframe
-    window.addEventListener('message', function(e) {
-      try {
-        var data = JSON.parse(e.data);
-        if (data.event === 'onStateChange') {
-          // 1 = playing, 2 = paused, 0 = ended
-          if (data.info === 1) {
-            isPlaying = true;
-            updateUI();
-          } else if (data.info === 2 || data.info === 0) {
-            isPlaying = false;
-            updateUI();
-          }
-        }
-      } catch(err) {}
+      scWidget.bind(SC.Widget.Events.PLAY, function() {
+        isPlaying = true;
+        updateUI();
+      });
+
+      scWidget.bind(SC.Widget.Events.PAUSE, function() {
+        isPlaying = false;
+        updateUI();
+      });
     });
 
     function toggleMusic() {
+      if (!scWidget) return;
       if (isPlaying) {
-        sendYTCommand('pauseVideo');
+        scWidget.pause();
       } else {
-        sendYTCommand('playVideo');
-        sendYTCommand('setVolume', [80]);
+        scWidget.play();
       }
     }
 
@@ -529,15 +523,12 @@
       }
     }
 
-    // Auto-trigger play on first user interaction anywhere on page
+    // Fallback: trigger play on first user interaction (bypass autoplay block)
     var firstInteraction = false;
     document.addEventListener('click', function() {
-      if (!firstInteraction) {
+      if (!firstInteraction && scWidget) {
         firstInteraction = true;
-        isPlaying = true;
-        sendYTCommand('playVideo');
-        sendYTCommand('setVolume', [80]);
-        updateUI();
+        scWidget.play();
       }
     }, { capture: true });
 
