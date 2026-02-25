@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms &amp; Conditions - Bukber CHD 2026</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .font-amiri { font-family: 'Amiri', serif; }
+    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .islamic-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30M0 0L60 60M60 0L0 60' stroke='%231e40af' stroke-width='0.5' stroke-opacity='0.08' fill='none'/%3E%3Ccircle cx='30' cy='30' r='10' stroke='%231e40af' stroke-width='0.5' stroke-opacity='0.08' fill='none'/%3E%3C/svg%3E");
+    }
+    .lantern-decoration { animation: sway 3s ease-in-out infinite; }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .animate-fade-in { animation: fadeInUp 0.6s ease-out forwards; }
+    .shimmer-text {
+      background: linear-gradient(90deg, #1e40af 0%, #3b82f6 50%, #1e40af 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15); }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .accordion-content.active { max-height: 4000px; }
+    .star-decoration {
+      position: absolute; font-size: 0.75rem; color: #1e40af; opacity: 0.3;
+      animation: twinkle 2s ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+    /* Music Player */
+    .music-player {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      border-radius: 50px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(30, 64, 175, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+      user-select: none;
+    }
+    .music-player:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(30, 64, 175, 0.5); }
+    .music-icon { font-size: 1.2rem; animation: pulse-music 1.5s ease-in-out infinite; }
+    @keyframes pulse-music {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    .music-icon.paused { animation: none; }
+    .music-info { display: flex; flex-direction: column; line-height: 1.2; }
+    .music-title { font-size: 0.75rem; font-weight: 600; opacity: 0.9; }
+    .music-artist { font-size: 0.65rem; opacity: 0.7; }
+    .music-btn { background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 0.9rem; transition: background 0.2s; }
+    .music-btn:hover { background: rgba(255,255,255,0.35); }
+    .equalizer { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+    .eq-bar {
+      width: 3px; background: white; border-radius: 2px;
+      animation: eq-anim 0.8s ease-in-out infinite;
+    }
+    .eq-bar:nth-child(1) { animation-delay: 0s; }
+    .eq-bar:nth-child(2) { animation-delay: 0.15s; }
+    .eq-bar:nth-child(3) { animation-delay: 0.3s; }
+    .eq-bar:nth-child(4) { animation-delay: 0.45s; }
+    @keyframes eq-anim {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+    .equalizer.paused .eq-bar { animation: none; height: 4px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid rgba(30,64,175,0.2); padding: 8px 10px; text-align: left; font-size: 0.8rem; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-poppins">
+  <!-- Music Player Widget -->
+  <div class="music-player" id="musicPlayer" onclick="toggleMusic()">
+    <div class="equalizer" id="equalizer">
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+    </div>
+    <div class="music-info">
+      <span class="music-title">Ramadan</span>
+      <span class="music-artist">Maher Zain</span>
+    </div>
+    <button class="music-btn" id="playPauseBtn">▐▐</button>
+  </div>
+  <!-- Hidden YouTube Audio -->
+  <div id="ytPlayerContainer" style="display:none;"></div>
+
+  <div id="app-wrapper" class="w-full h-full overflow-auto islamic-pattern" style="background-color: #fef8f0;">
+   <div class="fixed top-10 left-10 lantern-decoration opacity-20 pointer-events-none hidden md:block">
+    <svg width="40" height="60" viewbox="0 0 40 60" fill="none"><path d="M20 0V10M15 10H25M10 15C10 15 5 25 5 35C5 45 12 50 20 50C28 50 35 45 35 35C35 25 30 15 30 15H10Z" stroke="#1e40af" stroke-width="2" /><path d="M15 55H25M18 50V55M22 50V55" stroke="#1e40af" stroke-width="2" /></svg>
+   </div>
+   <div class="fixed top-20 right-16 lantern-decoration opacity-20 pointer-events-none hidden md:block" style="animation-delay: 0.5s;">
+    <svg width="30" height="45" viewbox="0 0 40 60" fill="none"><path d="M20 0V10M15 10H25M10 15C10 15 5 25 5 35C5 45 12 50 20 50C28 50 35 45 35 35C35 25 30 15 30 15H10Z" stroke="#1e40af" stroke-width="2" /></svg>
+   </div>
+   <div class="star-decoration" style="top: 15%; left: 5%;">✦</div>
+   <div class="star-decoration" style="top: 25%; right: 8%; animation-delay: 0.5s;">✧</div>
+   <div class="star-decoration" style="top: 45%; left: 3%; animation-delay: 1s;">✦</div>
+   <div class="star-decoration" style="top: 65%; right: 5%; animation-delay: 1.5s;">✧</div>
+
+   <header class="relative py-12 px-4 text-center" style="background: linear-gradient(180deg, #1e40af 0%, #2563eb 100%);">
+    <div class="absolute inset-0 opacity-10">
+     <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100"><pattern id="islamic-geo" x="0" y="0" width="20" height="20" patternunits="userSpaceOnUse"><circle cx="10" cy="10" r="8" fill="none" stroke="white" stroke-width="0.5" /><path d="M10 2 L10 18 M2 10 L18 10" stroke="white" stroke-width="0.3" /></pattern><rect width="100%" height="100%" fill="url(#islamic-geo)" /></svg>
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto">
+     <div class="flex justify-center mb-4 animate-fade-in"><div class="text-5xl" style="color: #fef8f0;">☪</div></div>
+     <p class="text-sm tracking-[0.3em] uppercase mb-2 animate-fade-in" style="color: #fef8f0; opacity: 0.8; animation-delay: 0.1s;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+     <h1 class="font-amiri text-3xl md:text-5xl font-bold mb-3 animate-fade-in" style="color: #fef8f0; animation-delay: 0.2s;">Terms &amp; Conditions</h1>
+     <div class="flex items-center justify-center gap-4 mb-4 animate-fade-in" style="animation-delay: 0.3s;">
+      <div class="h-px w-16 md:w-24" style="background: linear-gradient(90deg, transparent, #fef8f0);"></div><span class="text-2xl" style="color: #fef8f0;">✦</span>
+      <div class="h-px w-16 md:w-24" style="background: linear-gradient(90deg, #fef8f0, transparent);"></div>
+     </div>
+     <h2 class="font-poppins text-xl md:text-2xl font-medium animate-fade-in" style="color: #fef8f0; animation-delay: 0.4s;">Berbuka Bersama &amp; Halal Bihalal CHD 2026</h2>
+     <div class="mt-4 inline-flex items-center gap-2 px-6 py-2 rounded-full animate-fade-in" style="background: rgba(254, 248, 240, 0.15); animation-delay: 0.5s;"><span class="text-lg">🌙</span><span class="font-semibold tracking-wide" style="color: #fef8f0;">#IgniteTheMoment</span></div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0">
+     <svg viewbox="0 0 1440 100" fill="none" preserveaspectratio="none" class="w-full h-12"><path d="M0 50C240 100 480 0 720 50C960 100 1200 0 1440 50V100H0V50Z" fill="#fef8f0" /></svg>
+    </div>
+   </header>
+
+   <main class="max-w-5xl mx-auto px-4 py-8 md:py-12">
+    <!-- Intro -->
+    <section class="mb-10 animate-fade-in" style="animation-delay: 0.6s;">
+     <div class="rounded-2xl p-6 md:p-8 card-hover" style="background: white; border: 1px solid rgba(30, 64, 175, 0.1); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);">
+      <div class="flex items-start gap-4">
+       <div class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">📜</div>
+       <div>
+        <h3 class="font-semibold text-lg mb-2" style="color: #1e40af;">Pendahuluan</h3>
+        <p class="leading-relaxed" style="color: #4b5563;">Selamat datang di halaman Syarat &amp; Ketentuan Pra-Event <strong>Berbuka Bersama dan Halal Bihalal CHD 2026</strong>. Dengan mengikuti kompetisi ini, peserta dianggap telah membaca, memahami, dan menyetujui seluruh ketentuan yang berlaku. Mari meriahkan bulan suci Ramadhan dengan semangat kebersamaan dan kreativitas!</p>
+       </div>
+      </div>
+     </div>
+    </section>
+
+    <section class="space-y-6">
+     <!-- Lomba 1: Nasyid -->
+     <div class="accordion-item animate-fade-in" style="animation-delay: 0.7s;">
+      <div class="rounded-2xl overflow-hidden card-hover" style="background: white; border: 1px solid rgba(30, 64, 175, 0.1); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);">
+       <button onclick="toggleAccordion(this)" class="w-full px-6 py-5 flex items-center justify-between text-left transition-all hover:bg-blue-50">
+        <div class="flex items-center gap-4">
+         <div class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">🎤</div>
+         <div><span class="text-xs font-semibold tracking-wider uppercase" style="color: #3b82f6;">Lomba 1</span>
+          <h3 class="font-bold text-xl" style="color: #1e3a8a;">Nasyid</h3>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="hidden md:inline-block px-3 py-1 rounded-full text-xs font-medium" style="background: #dbeafe; color: #1e40af;">Grup</span>
+         <svg class="w-6 h-6 transform transition-transform accordion-arrow" style="color: #1e40af;" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
+       </button>
+       <div class="accordion-content">
+        <div class="px-6 pb-6">
+         <div class="h-px w-full mb-6" style="background: linear-gradient(90deg, transparent, rgba(30, 64, 175, 0.2), transparent);"></div>
+         <div class="mb-6">
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">📋</span><h4 class="font-semibold" style="color: #1e40af;">Persyaratan</h4></div>
+          <div class="grid gap-3">
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Dilakukan secara grup <strong>&gt; 3 orang</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Durasi Video: <strong>4-5 menit</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Peserta dalam 1 grup <strong>boleh lintas departemen</strong> (menjadi poin plus penilaian)</span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Format video: <strong>MP4 (Landscape, Minimal HD 720p)</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Peserta diperbolehkan melakukan <strong>editing video</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #fef3c7;"><span class="text-amber-500 mt-0.5">⚠</span><span style="color: #4b5563;"><strong>Wajib</strong> diposting di Instagram dengan hashtag <strong>#IgniteTheMoment #BukBerKCH #RamadhanBerkah #NasyidKCH</strong> (akun tidak dikunci)</span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Instrumen dan jenis nasyid <strong>bebas</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Lirik mengandung <strong>nilai dakwah, akhlak, atau pujian kepada Allah dan Rasulullah</strong></span></div>
+          </div>
+         </div>
+         <div class="mb-6 p-4 rounded-xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">
+          <div class="flex items-center gap-3 text-white"><span class="text-2xl">⏰</span>
+           <div><p class="text-sm opacity-90">Deadline Pengumpulan</p><p class="font-bold text-lg">3 Maret 2026 • 23:59 WIB</p></div>
+          </div>
+         </div>
+         <div>
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">⭐</span><h4 class="font-semibold" style="color: #1e40af;">Kriteria Penilaian</h4></div>
+          <div class="grid md:grid-cols-2 gap-3">
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">1</span><span class="font-medium" style="color: #1e3a8a;">Vokal &amp; Harmonisasi</span></div><p class="text-sm pl-8" style="color: #6b7280;">Nada dan artikulasi yang baik</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">2</span><span class="font-medium" style="color: #1e3a8a;">Penghayatan &amp; Kekompakan</span></div><p class="text-sm pl-8" style="color: #6b7280;">Ekspresi dan koordinasi tim</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">3</span><span class="font-medium" style="color: #1e3a8a;">Artistik &amp; Kreativitas Video</span></div><p class="text-sm pl-8" style="color: #6b7280;">Kualitas visual dan editing</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">4</span><span class="font-medium" style="color: #1e3a8a;">Dresscode &amp; Dekorasi</span></div><p class="text-sm pl-8" style="color: #6b7280;">Kreativitas kostum dan setting</p></div>
+           <div class="p-4 rounded-xl border md:col-span-2" style="border-color: rgba(30, 64, 175, 0.2); background: #eff6ff;"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">⭐</span><span class="font-medium" style="color: #1e3a8a;">Bonus: Kolaborasi Antar Departemen</span></div><p class="text-sm pl-8" style="color: #6b7280;">Tambahan penilaian 10% untuk grup lintas departemen</p></div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <!-- Lomba 2: Kultum -->
+     <div class="accordion-item animate-fade-in" style="animation-delay: 0.8s;">
+      <div class="rounded-2xl overflow-hidden card-hover" style="background: white; border: 1px solid rgba(30, 64, 175, 0.1); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);">
+       <button onclick="toggleAccordion(this)" class="w-full px-6 py-5 flex items-center justify-between text-left transition-all hover:bg-blue-50">
+        <div class="flex items-center gap-4">
+         <div class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">🎙️</div>
+         <div><span class="text-xs font-semibold tracking-wider uppercase" style="color: #3b82f6;">Lomba 2</span>
+          <h3 class="font-bold text-xl" style="color: #1e3a8a;">Kultum</h3>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="hidden md:inline-block px-3 py-1 rounded-full text-xs font-medium" style="background: #dbeafe; color: #1e40af;">Individu</span>
+         <svg class="w-6 h-6 transform transition-transform accordion-arrow" style="color: #1e40af;" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
+       </button>
+       <div class="accordion-content">
+        <div class="px-6 pb-6">
+         <div class="h-px w-full mb-6" style="background: linear-gradient(90deg, transparent, rgba(30, 64, 175, 0.2), transparent);"></div>
+         <div class="mb-6">
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">📋</span><h4 class="font-semibold" style="color: #1e40af;">Persyaratan</h4></div>
+          <div class="grid gap-3">
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Dilakukan secara <strong>perorangan</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Durasi Video: <strong>4-5 menit</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Format video: <strong>MP4 (Landscape, Minimal HD 720p)</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Peserta diperbolehkan melakukan <strong>editing video</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #fef3c7;"><span class="text-amber-500 mt-0.5">⚠</span><span style="color: #4b5563;"><strong>Wajib</strong> diposting di Instagram dengan hashtag <strong>#IgniteTheMoment #BukBerKCH #RamadhanBerkah #KultumKCH</strong> (akun tidak dikunci)</span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Tema kultum sejalan dengan tema: <strong>"IgniteTheMoment : From Reflection to Elevation"</strong></span></div>
+          </div>
+         </div>
+         <div class="mb-6 p-4 rounded-xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">
+          <div class="flex items-center gap-3 text-white"><span class="text-2xl">⏰</span>
+           <div><p class="text-sm opacity-90">Deadline Pengumpulan</p><p class="font-bold text-lg">3 Maret 2026 • 23:59 WIB</p></div>
+          </div>
+         </div>
+         <div>
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">⭐</span><h4 class="font-semibold" style="color: #1e40af;">Kriteria Penilaian</h4></div>
+          <div class="grid md:grid-cols-2 gap-3">
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">1</span><span class="font-medium" style="color: #1e3a8a;">Materi Kultum</span></div><p class="text-sm pl-8" style="color: #6b7280;">Berkaitan dengan ibadah Ramadhan, tidak mengandung SARA dan politik</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">2</span><span class="font-medium" style="color: #1e3a8a;">Intonasi Persuasive</span></div><p class="text-sm pl-8" style="color: #6b7280;">Kemampuan meyakinkan pendengar</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">3</span><span class="font-medium" style="color: #1e3a8a;">Gaya Penuturan</span></div><p class="text-sm pl-8" style="color: #6b7280;">Cara penyampaian yang menarik</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">4</span><span class="font-medium" style="color: #1e3a8a;">Penampilan</span></div><p class="text-sm pl-8" style="color: #6b7280;">Dekorasi dan kostum yang menarik</p></div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <!-- Lomba 3: Video Tips -->
+     <div class="accordion-item animate-fade-in" style="animation-delay: 0.9s;">
+      <div class="rounded-2xl overflow-hidden card-hover" style="background: white; border: 1px solid rgba(30, 64, 175, 0.1); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);">
+       <button onclick="toggleAccordion(this)" class="w-full px-6 py-5 flex items-center justify-between text-left transition-all hover:bg-blue-50">
+        <div class="flex items-center gap-4">
+         <div class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">🎬</div>
+         <div><span class="text-xs font-semibold tracking-wider uppercase" style="color: #3b82f6;">Lomba 3</span>
+          <h3 class="font-bold text-xl" style="color: #1e3a8a;">Video Tips Ramadhan Sehat &amp; Berkah</h3>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="hidden md:inline-block px-3 py-1 rounded-full text-xs font-medium" style="background: #dbeafe; color: #1e40af;">Individu/Grup</span>
+         <svg class="w-6 h-6 transform transition-transform accordion-arrow" style="color: #1e40af;" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
+       </button>
+       <div class="accordion-content">
+        <div class="px-6 pb-6">
+         <div class="h-px w-full mb-6" style="background: linear-gradient(90deg, transparent, rgba(30, 64, 175, 0.2), transparent);"></div>
+         <div class="mb-6">
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">📋</span><h4 class="font-semibold" style="color: #1e40af;">Persyaratan</h4></div>
+          <div class="grid gap-3">
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Peserta dapat mengikuti secara <strong>individu maupun tim</strong>, dengan jumlah anggota tim <strong>minimal 1 orang dan maksimal 5 orang</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Durasi Video: <strong>1-2 menit</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Format video: <strong>MP4 (Landscape, Minimal HD 720p)</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Peserta diperbolehkan melakukan <strong>editing video</strong></span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #fef3c7;"><span class="text-amber-500 mt-0.5">⚠</span><span style="color: #4b5563;"><strong>Wajib</strong> diposting di Instagram dengan hashtag <strong>#IgniteTheMoment #BukBerKCH #RamadhanBerkah #TipsRamadanKCH</strong> (akun tidak dikunci)</span></div>
+           <div class="flex items-start gap-3 p-3 rounded-lg" style="background: #f8fafc;"><span class="text-blue-500 mt-0.5">✓</span><span style="color: #4b5563;">Tema video <strong>bebas</strong> namun sesuai dengan konsep <strong>tips Ramadan sehat dan berkah</strong></span></div>
+          </div>
+         </div>
+         <div class="mb-6 p-4 rounded-xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">
+          <div class="flex items-center gap-3 text-white"><span class="text-2xl">⏰</span>
+           <div><p class="text-sm opacity-90">Deadline Pengumpulan</p><p class="font-bold text-lg">3 Maret 2026 • 23:59 WIB</p></div>
+          </div>
+         </div>
+         <div>
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">⭐</span><h4 class="font-semibold" style="color: #1e40af;">Kriteria Penilaian</h4></div>
+          <div class="grid md:grid-cols-2 gap-3">
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">1</span><span class="font-medium" style="color: #1e3a8a;">Kreativitas Konten</span></div><p class="text-sm pl-8" style="color: #6b7280;">Ide original dan inovatif</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">2</span><span class="font-medium" style="color: #1e3a8a;">Konten Aplikatif</span></div><p class="text-sm pl-8" style="color: #6b7280;">Mudah dipahami dan relevan</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">3</span><span class="font-medium" style="color: #1e3a8a;">Kualitas Visual</span></div><p class="text-sm pl-8" style="color: #6b7280;">Penyampaian dan tampilan menarik</p></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2);"><div class="flex items-center gap-2 mb-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #1e40af;">4</span><span class="font-medium" style="color: #1e3a8a;">Engagement</span></div><p class="text-sm pl-8" style="color: #6b7280;">Daya inspirasi kepada penonton</p></div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <!-- Program Kebaikan: Santunan -->
+     <div class="accordion-item animate-fade-in" style="animation-delay: 1s;">
+      <div class="rounded-2xl overflow-hidden card-hover" style="background: white; border: 1px solid rgba(30, 64, 175, 0.1); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);">
+       <button onclick="toggleAccordion(this)" class="w-full px-6 py-5 flex items-center justify-between text-left transition-all hover:bg-blue-50">
+        <div class="flex items-center gap-4">
+         <div class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">💝</div>
+         <div><span class="text-xs font-semibold tracking-wider uppercase" style="color: #3b82f6;">Program Kebaikan</span>
+          <h3 class="font-bold text-xl" style="color: #1e3a8a;">Santunan Anak Yatim</h3>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="hidden md:inline-block px-3 py-1 rounded-full text-xs font-medium" style="background: #dcfce7; color: #166534;">Amal</span>
+         <svg class="w-6 h-6 transform transition-transform accordion-arrow" style="color: #1e40af;" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
+       </button>
+       <div class="accordion-content">
+        <div class="px-6 pb-6">
+         <div class="h-px w-full mb-6" style="background: linear-gradient(90deg, transparent, rgba(30, 64, 175, 0.2), transparent);"></div>
+         <div class="mb-8">
+          <div class="text-center p-8 rounded-2xl" style="background: linear-gradient(135deg, #eff6ff, #dbeafe);">
+           <div class="text-5xl mb-4">🤲</div>
+           <h4 class="font-bold text-xl mb-3" style="color: #1e40af;">Program Santunan Anak Yatim</h4>
+           <p style="color: #4b5563;">Mari berbagi kebahagiaan di bulan suci Ramadhan dengan menyantuni anak-anak yatim melalui program berkeliling yang meriah dan penuh kreativitas!</p>
+          </div>
+         </div>
+         <!-- Mekanisme -->
+         <div class="mb-8">
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">⚙️</span><h4 class="font-semibold" style="color: #1e40af;">Mekanisme Pengumpulan Santunan</h4></div>
+          <div class="grid gap-4">
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2); background: #f8fafc;"><div class="flex items-start gap-3"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="background: #1e40af;">1</span><div><p class="font-semibold" style="color: #1e40af;">Lokasi Pengumpulan</p><p style="color: #4b5563;">Santunan dikumpulkan di <strong>3 site utama:</strong></p><div class="mt-2 flex flex-wrap gap-2"><span class="px-3 py-1 rounded-lg font-medium text-sm" style="background: #dbeafe; color: #1e40af;">🏢 CIKARANG</span><span class="px-3 py-1 rounded-lg font-medium text-sm" style="background: #dbeafe; color: #1e40af;">🏢 PULOGADUNG</span><span class="px-3 py-1 rounded-lg font-medium text-sm" style="background: #dbeafe; color: #1e40af;">🏢 PULOMAS</span></div></div></div></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2); background: #f8fafc;"><div class="flex items-start gap-3"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="background: #1e40af;">2</span><div><p class="font-semibold" style="color: #1e40af;">Pembagian Grup</p><p style="color: #4b5563;">Total <strong>14 grup</strong> yang akan berkeliling ke departemen lain sesuai jadwal yang telah ditentukan</p></div></div></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2); background: #f8fafc;"><div class="flex items-start gap-3"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="background: #1e40af;">3</span><div><p class="font-semibold" style="color: #1e40af;">Minimal Perwakilan per Grup</p><p style="color: #4b5563;">Setiap grup <strong>wajib mengirimkan minimal 6 orang</strong> untuk berkeliling pengambilan santunan</p></div></div></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2); background: #f8fafc;"><div class="flex items-start gap-3"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="background: #1e40af;">4</span><div><p class="font-semibold" style="color: #1e40af;">Karakter Ikon Kostum</p><p style="color: #4b5563;">Setiap grup mendapatkan <strong>1 karakter ikon unik</strong> dari panitia sebagai acuan kostum berkeliling</p></div></div></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2); background: #f8fafc;"><div class="flex items-start gap-3"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="background: #1e40af;">5</span><div><p class="font-semibold" style="color: #1e40af;">Amplop THR &amp; Kuis</p><p style="color: #4b5563;">Setiap grup diberikan <strong>4 amplop THR yang berisi voucher 25k/amplop</strong> untuk dibagikan ke karyawan yang dapat menjawab kuis</p><p class="mt-2" style="color: #4b5563;"><strong>Soal kuis</strong> diberikan oleh panitia ke masing-masing grup yang akan melakukan THR CORE</p></div></div></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2); background: #f8fafc;"><div class="flex items-start gap-3"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="background: #1e40af;">6</span><div><p class="font-semibold" style="color: #1e40af;">Metode Pemberian Santunan</p><p style="color: #4b5563;">Santunan dapat berupa <strong>cash dan transfer/QRIS dengan kode unik di 3 angka terakhir nominal 026</strong> (contoh: 100.026)</p><p class="mt-2" style="color: #4b5563;"><strong>Transfer bisa melalui BCA (765-502-9605) Tari Halimatul Saddiah</strong></p></div></div></div>
+           <div class="p-4 rounded-xl border" style="border-color: rgba(30, 64, 175, 0.2); background: #f8fafc;"><div class="flex items-start gap-3"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="background: #1e40af;">7</span><div><p class="font-semibold" style="color: #1e40af;">Dokumentasi</p><p style="color: #4b5563;">Setiap grup <strong>harus mendokumentasikan</strong> proses pemberian santunan untuk keperluan laporan dan dokumentasi acara</p></div></div></div>
+          </div>
+         </div>
+
+         <!-- Tabel Jadwal BARU -->
+         <div class="mb-8">
+          <div class="flex items-center gap-2 mb-4"><span class="text-lg">📅</span><h4 class="font-semibold" style="color: #1e40af;">Pembagian Grup dan Jadwal</h4></div>
+          <div class="overflow-x-auto rounded-xl" style="border: 1px solid rgba(30,64,175,0.2);">
+           <table style="min-width: 900px;">
+            <thead>
+             <tr style="background: linear-gradient(135deg, #1e40af, #3b82f6);">
+              <th rowspan="2" class="px-3 py-3 text-white" style="border-color: rgba(255,255,255,0.2); vertical-align: middle; min-width:80px;">Tanggal</th>
+              <th colspan="2" class="px-3 py-2 text-white text-center" style="border-color: rgba(255,255,255,0.2);">PULOMAS (B7)</th>
+              <th colspan="2" class="px-3 py-2 text-white text-center" style="border-color: rgba(255,255,255,0.2);">PULOMAS (SFL)</th>
+              <th colspan="2" class="px-3 py-2 text-white text-center" style="border-color: rgba(255,255,255,0.2);">PULOGADUNG</th>
+              <th colspan="2" class="px-3 py-2 text-white text-center" style="border-color: rgba(255,255,255,0.2);">CIKARANG (B7)</th>
+              <th colspan="2" class="px-3 py-2 text-white text-center" style="border-color: rgba(255,255,255,0.2);">CIKARANG (SFL)</th>
+             </tr>
+             <tr style="background: #1e3a8a;">
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Dept</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Berkunjung ke</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Dept</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Berkunjung ke</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Dept</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Berkunjung ke</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Dept</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Berkunjung ke</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Dept</th>
+              <th class="px-2 py-2 text-white text-xs" style="border-color: rgba(255,255,255,0.2);">Berkunjung ke</th>
+             </tr>
+            </thead>
+            <tbody>
+             <tr style="background: #f8fafc;">
+              <td class="px-3 py-3 font-semibold" style="color: #1e40af;">3 Maret</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">FAIA, IT, HRDGAL</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">BD, BINA, RND</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">FAIA, IT, HRDGAL</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">MARKETING &amp; SALES</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">PRODUKSI, WH, GA</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">QA &amp; QAC, QC, QS</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">PRODUKSI, WH, GA</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">QA &amp; QAC, QC, QS</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">PRODUKSI, WH, GA</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">QA &amp; QAC, QC, QS</td>
+             </tr>
+             <tr style="background: white;">
+              <td class="px-3 py-3 font-semibold" style="color: #1e40af;">10 Maret</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">MARKETING &amp; SALES</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">FAIA, IT, HRDGAL</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">MARKETING &amp; SALES</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">FAIA, IT, HRDGAL</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">TEHNIK &amp; MD, PPIC, TS, CPRO</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">PRODUKSI, WH, GA</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">TEHNIK &amp; MD, PPIC, TS, RND, PURCHASING</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">PRODUKSI, WH, GA</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">TEHNIK &amp; MD, PPIC, RND, PURCHASING</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">PRODUKSI, WH, GA</td>
+             </tr>
+             <tr style="background: #f8fafc;">
+              <td class="px-3 py-3 font-semibold" style="color: #1e40af;">13 Maret</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">BD, BINA, RND</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">MARKETING &amp; SALES</td>
+              <td class="px-3 py-3 text-xs" style="color: #6b7280;">-</td>
+              <td class="px-3 py-3 text-xs" style="color: #6b7280;">-</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">QA &amp; QAC, QC, QS</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">TEHNIK &amp; MD, PPIC, TS, CPRO</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">QA &amp; QAC, QC, QS</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">TEHNIK &amp; MD, PPIC, TS, RND, PURCHASING</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">QA &amp; QAC, QC, QS</td>
+              <td class="px-3 py-3 text-xs" style="color: #4b5563;">TEHNIK &amp; MD, PPIC, TS, RND, PURCHASING</td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+          <p class="text-xs mt-4 p-3 rounded-lg" style="background: #fef3c7; color: #92400e;"><strong>Catatan:</strong> Departemen yang terdaftar pada setiap tanggal akan menerima kunjungan dari perwakilan grup dengan amplop THR dan pertanyaan kuis.</p>
+         </div>
+
+         <div class="p-4 rounded-xl" style="background: #dcfce7; border: 1px solid #86efac;">
+          <div class="flex items-start gap-3"><span class="text-2xl">🏆</span><div><p class="font-semibold" style="color: #166534;">Hadiah Menarik</p><p class="text-sm" style="color: #15803d;">Grup dengan penampilan paling meriah, kostum paling menarik, dan kekompakan terbaik akan mendapatkan hadiah menarik di acara hari H Halal Bi Halal KCH 2026!</p></div></div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+
+    <!-- Ketentuan Umum -->
+    <section class="mt-10 animate-fade-in" style="animation-delay: 1.1s;">
+     <div class="rounded-2xl p-6 md:p-8" style="background: linear-gradient(135deg, #1e3a8a, #1e40af);">
+      <div class="flex items-center gap-3 mb-6"><span class="text-3xl">📌</span><h3 class="font-bold text-xl text-white">Ketentuan Umum</h3></div>
+      <div class="grid gap-4">
+       <div class="flex items-start gap-3 p-4 rounded-xl" style="background: rgba(255,255,255,0.1);"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background: #fef8f0; color: #1e40af;">1</span><p class="text-white">Seluruh peserta wajib mengikuti ketentuan yang telah ditetapkan oleh panitia.</p></div>
+       <div class="flex items-start gap-3 p-4 rounded-xl" style="background: rgba(255,255,255,0.1);"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background: #fef8f0; color: #1e40af;">2</span><p class="text-white">Keputusan juri bersifat <strong>mutlak</strong> dan tidak dapat diganggu gugat.</p></div>
+       <div class="flex items-start gap-3 p-4 rounded-xl" style="background: rgba(255,255,255,0.1);"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background: #fef8f0; color: #1e40af;">3</span><p class="text-white">Video yang melanggar norma kesopanan, mengandung SARA, atau unsur politik akan <strong>didiskualifikasi</strong>.</p></div>
+       <div class="flex items-start gap-3 p-4 rounded-xl" style="background: rgba(255,255,255,0.1);"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background: #fef8f0; color: #1e40af;">4</span><p class="text-white">Panitia berhak menggunakan video peserta untuk keperluan publikasi dan dokumentasi acara.</p></div>
+       <div class="flex items-start gap-3 p-4 rounded-xl" style="background: rgba(255,255,255,0.1);"><span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background: #fef8f0; color: #1e40af;">5</span><p class="text-white">Peserta yang terlambat mengumpulkan video melewati deadline <strong>tidak akan dinilai</strong>.</p></div>
+      </div>
+     </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="mt-10 text-center animate-fade-in" style="animation-delay: 1.2s;">
+     <div class="rounded-2xl p-8" style="background: white; border: 1px solid rgba(30, 64, 175, 0.1); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);">
+      <div class="text-4xl mb-4">📞</div>
+      <h3 class="font-bold text-xl mb-2" style="color: #1e40af;">Ada Pertanyaan?</h3>
+      <p class="mb-6" style="color: #6b7280;">Hubungi panitia CHD untuk informasi lebih lanjut</p>
+      <div class="flex flex-col md:flex-row gap-3 justify-center items-center">
+       <div class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium" style="background: #eff6ff; color: #1e40af;"><span>📧</span><span>Contact: Panitia CHD 2026</span></div>
+       <a href="https://wa.me/6285774620577" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-white transition-all hover:shadow-lg" style="background: #25D366;"><span>💬</span><span>WhatsApp: +62 857 7462 0577</span></a>
+      </div>
+     </div>
+    </section>
+   </main>
+
+   <footer class="py-8 px-4 text-center" style="background: linear-gradient(180deg, #fef8f0, #e8e0d5);">
+    <div class="max-w-4xl mx-auto">
+     <div class="flex items-center justify-center gap-4 mb-4">
+      <div class="h-px w-16" style="background: linear-gradient(90deg, transparent, #1e40af);"></div><span class="text-2xl">☪</span>
+      <div class="h-px w-16" style="background: linear-gradient(90deg, #1e40af, transparent);"></div>
+     </div>
+     <p class="font-amiri text-lg mb-2" style="color: #1e40af;">رَمَضَانُ كَرِيمٌ</p>
+     <p class="text-sm" style="color: #6b7280;">© 2026 CHD - Berbuka Bersama &amp; Halal Bihalal</p>
+     <p class="text-xs mt-2" style="color: #9ca3af;">#IgniteTheMoment #BukBerKCH #RamadhanBerkah</p>
+    </div>
+   </footer>
+  </div>
+
+  <!-- YouTube IFrame API for audio -->
+  <script>
+    var player;
+    var isPlaying = false;
+
+    // Load YouTube IFrame API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('ytPlayerContainer', {
+        height: '1',
+        width: '1',
+        videoId: 'E_QLaegGVpA', // Maher Zain - Ramadan
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'E_QLaegGVpA',
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          modestbranding: 1
+        },
+        events: {
+          onReady: function(e) {
+            e.target.setVolume(60);
+            e.target.playVideo();
+            isPlaying = true;
+            updateUI();
+          },
+          onStateChange: function(e) {
+            if (e.data === YT.PlayerState.PLAYING) {
+              isPlaying = true;
+            } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+              isPlaying = false;
+            }
+            updateUI();
+          }
+        }
+      });
+    }
+
+    function toggleMusic() {
+      if (!player) return;
+      if (isPlaying) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+    }
+
+    function updateUI() {
+      var btn = document.getElementById('playPauseBtn');
+      var eq = document.getElementById('equalizer');
+      if (isPlaying) {
+        btn.textContent = '▐▐';
+        eq.classList.remove('paused');
+      } else {
+        btn.textContent = '▶';
+        eq.classList.add('paused');
+      }
+    }
+
+    // Accordion
+    function toggleAccordion(button) {
+      var content = button.nextElementSibling;
+      var arrow = button.querySelector('.accordion-arrow');
+      var isActive = content.classList.contains('active');
+      document.querySelectorAll('.accordion-content').forEach(function(item) { item.classList.remove('active'); });
+      document.querySelectorAll('.accordion-arrow').forEach(function(a) { a.style.transform = 'rotate(0deg)'; });
+      if (!isActive) {
+        content.classList.add('active');
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    }
+  </script>
+ </body>
+</html>
