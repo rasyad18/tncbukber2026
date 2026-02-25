@@ -98,7 +98,7 @@
  </head>
  <body class="h-full font-poppins">
   <!-- Music Player Widget -->
-  <div class="music-player" id="musicPlayer" onclick="toggleMusic()">
+  <div class="music-player" id="musicPlayer" onclick="toggleMusic(event)">
     <div class="equalizer paused" id="equalizer">
       <div class="eq-bar"></div>
       <div class="eq-bar"></div>
@@ -136,7 +136,7 @@
      <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100"><pattern id="islamic-geo" x="0" y="0" width="20" height="20" patternunits="userSpaceOnUse"><circle cx="10" cy="10" r="8" fill="none" stroke="white" stroke-width="0.5" /><path d="M10 2 L10 18 M2 10 L18 10" stroke="white" stroke-width="0.3" /></pattern><rect width="100%" height="100%" fill="url(#islamic-geo)" /></svg>
     </div>
     <div class="relative z-10 max-w-4xl mx-auto">
-     
+     <div class="flex justify-center mb-4 animate-fade-in"><div class="text-5xl" style="color: #fef8f0;">☪</div></div>
      <p class="text-sm tracking-[0.3em] uppercase mb-2 animate-fade-in" style="color: #fef8f0; opacity: 0.8; animation-delay: 0.1s;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
      <h1 class="font-amiri text-3xl md:text-5xl font-bold mb-3 animate-fade-in" style="color: #fef8f0; animation-delay: 0.2s;">Terms &amp; Conditions</h1>
      <div class="flex items-center justify-center gap-4 mb-4 animate-fade-in" style="animation-delay: 0.3s;">
@@ -499,7 +499,9 @@
       });
     });
 
-    function toggleMusic() {
+    function toggleMusic(e) {
+      if (e) e.stopPropagation();
+      firstInteraction = true;
       if (!scWidget) return;
       if (isPlaying) {
         scWidget.pause();
@@ -523,14 +525,15 @@
       }
     }
 
-    // Fallback: trigger play on first user interaction (bypass autoplay block)
+    // On first click anywhere OUTSIDE the music player, start music
     var firstInteraction = false;
-    document.addEventListener('click', function() {
+    document.addEventListener('click', function(e) {
+      if (e.target.closest && e.target.closest('#musicPlayer')) return;
       if (!firstInteraction && scWidget) {
         firstInteraction = true;
         scWidget.play();
       }
-    }, { capture: true });
+    });
 
     // Accordion
     function toggleAccordion(button) {
