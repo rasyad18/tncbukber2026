@@ -113,7 +113,7 @@
   </div>
   <!-- YouTube iframe embed - hidden but functional -->
   <iframe id="ytFrame"
-    src="https://www.youtube.com/embed/E_QLaegGVpA?autoplay=1&loop=1&playlist=E_QLaegGVpA&controls=0&mute=0&enablejsapi=1"
+    src="https://www.youtube.com/embed/IhIiusMJsgU?autoplay=1&loop=1&playlist=IhIiusMJsgU&start=60&controls=0&mute=0&enablejsapi=1&origin=null"
     allow="autoplay; encrypted-media"
     style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;top:0;left:0;"
     frameborder="0">
@@ -474,16 +474,13 @@
   <script>
     var isPlaying = false;
     var ytFrame = null;
-    var userInteracted = false;
 
-    // Wait for iframe to load, then try to play
     window.addEventListener('load', function() {
       ytFrame = document.getElementById('ytFrame');
     });
 
-    // YouTube postMessage control
     function sendYTCommand(func, args) {
-      if (!ytFrame) return;
+      if (!ytFrame) ytFrame = document.getElementById('ytFrame');
       ytFrame.contentWindow.postMessage(JSON.stringify({
         event: 'command',
         func: func,
@@ -491,48 +488,58 @@
       }), '*');
     }
 
+    // Listen for messages from YouTube iframe
+    window.addEventListener('message', function(e) {
+      try {
+        var data = JSON.parse(e.data);
+        if (data.event === 'onStateChange') {
+          // 1 = playing, 2 = paused, 0 = ended
+          if (data.info === 1) {
+            isPlaying = true;
+            updateUI();
+          } else if (data.info === 2 || data.info === 0) {
+            isPlaying = false;
+            updateUI();
+          }
+        }
+      } catch(err) {}
+    });
+
     function toggleMusic() {
-      if (!userInteracted) {
-        // First click: unmute and ensure playing
-        userInteracted = true;
-        isPlaying = true;
-        sendYTCommand('unMute');
-        sendYTCommand('setVolume', [70]);
-        sendYTCommand('playVideo');
-      } else if (isPlaying) {
+      if (isPlaying) {
         sendYTCommand('pauseVideo');
-        isPlaying = false;
       } else {
         sendYTCommand('playVideo');
-        isPlaying = true;
+        sendYTCommand('setVolume', [80]);
       }
-      updateUI();
     }
 
     function updateUI() {
       var btn = document.getElementById('playPauseBtn');
       var eq = document.getElementById('equalizer');
+      var artistEl = document.querySelector('.music-artist');
       if (isPlaying) {
         btn.textContent = '▐▐';
         eq.classList.remove('paused');
+        if (artistEl) artistEl.textContent = 'Maher Zain';
       } else {
         btn.textContent = '▶';
         eq.classList.add('paused');
+        if (artistEl) artistEl.textContent = 'Maher Zain • klik ▶ untuk play';
       }
     }
 
-    // Auto-start when user first interacts with page (bypass autoplay policy)
-    document.addEventListener('click', function handler() {
-      if (!userInteracted) {
-        userInteracted = true;
+    // Auto-trigger play on first user interaction anywhere on page
+    var firstInteraction = false;
+    document.addEventListener('click', function() {
+      if (!firstInteraction) {
+        firstInteraction = true;
         isPlaying = true;
-        sendYTCommand('unMute');
-        sendYTCommand('setVolume', [70]);
         sendYTCommand('playVideo');
+        sendYTCommand('setVolume', [80]);
         updateUI();
       }
-      document.removeEventListener('click', handler);
-    }, { once: true });
+    }, { capture: true });
 
     // Accordion
     function toggleAccordion(button) {
