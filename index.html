@@ -99,7 +99,7 @@
  <body class="h-full font-poppins">
   <!-- Music Player Widget -->
   <div class="music-player" id="musicPlayer" onclick="toggleMusic()">
-    <div class="equalizer" id="equalizer">
+    <div class="equalizer paused" id="equalizer">
       <div class="eq-bar"></div>
       <div class="eq-bar"></div>
       <div class="eq-bar"></div>
@@ -107,12 +107,17 @@
     </div>
     <div class="music-info">
       <span class="music-title">Ramadan</span>
-      <span class="music-artist">Maher Zain</span>
+      <span class="music-artist">Maher Zain • klik untuk play</span>
     </div>
-    <button class="music-btn" id="playPauseBtn">▐▐</button>
+    <button class="music-btn" id="playPauseBtn">▶</button>
   </div>
-  <!-- Hidden YouTube Audio -->
-  <div id="ytPlayerContainer" style="display:none;"></div>
+  <!-- YouTube iframe embed - hidden but functional -->
+  <iframe id="ytFrame"
+    src="https://www.youtube.com/embed/E_QLaegGVpA?autoplay=1&loop=1&playlist=E_QLaegGVpA&controls=0&mute=0&enablejsapi=1"
+    allow="autoplay; encrypted-media"
+    style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;top:0;left:0;"
+    frameborder="0">
+  </iframe>
 
   <div id="app-wrapper" class="w-full h-full overflow-auto islamic-pattern" style="background-color: #fef8f0;">
    <div class="fixed top-10 left-10 lantern-decoration opacity-20 pointer-events-none hidden md:block">
@@ -466,57 +471,42 @@
    </footer>
   </div>
 
-  <!-- YouTube IFrame API for audio -->
   <script>
-    var player;
     var isPlaying = false;
+    var ytFrame = null;
+    var userInteracted = false;
 
-    // Load YouTube IFrame API
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // Wait for iframe to load, then try to play
+    window.addEventListener('load', function() {
+      ytFrame = document.getElementById('ytFrame');
+    });
 
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('ytPlayerContainer', {
-        height: '1',
-        width: '1',
-        videoId: 'E_QLaegGVpA', // Maher Zain - Ramadan
-        playerVars: {
-          autoplay: 1,
-          loop: 1,
-          playlist: 'E_QLaegGVpA',
-          controls: 0,
-          disablekb: 1,
-          fs: 0,
-          modestbranding: 1
-        },
-        events: {
-          onReady: function(e) {
-            e.target.setVolume(60);
-            e.target.playVideo();
-            isPlaying = true;
-            updateUI();
-          },
-          onStateChange: function(e) {
-            if (e.data === YT.PlayerState.PLAYING) {
-              isPlaying = true;
-            } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
-              isPlaying = false;
-            }
-            updateUI();
-          }
-        }
-      });
+    // YouTube postMessage control
+    function sendYTCommand(func, args) {
+      if (!ytFrame) return;
+      ytFrame.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func: func,
+        args: args || []
+      }), '*');
     }
 
     function toggleMusic() {
-      if (!player) return;
-      if (isPlaying) {
-        player.pauseVideo();
+      if (!userInteracted) {
+        // First click: unmute and ensure playing
+        userInteracted = true;
+        isPlaying = true;
+        sendYTCommand('unMute');
+        sendYTCommand('setVolume', [70]);
+        sendYTCommand('playVideo');
+      } else if (isPlaying) {
+        sendYTCommand('pauseVideo');
+        isPlaying = false;
       } else {
-        player.playVideo();
+        sendYTCommand('playVideo');
+        isPlaying = true;
       }
+      updateUI();
     }
 
     function updateUI() {
@@ -530,6 +520,19 @@
         eq.classList.add('paused');
       }
     }
+
+    // Auto-start when user first interacts with page (bypass autoplay policy)
+    document.addEventListener('click', function handler() {
+      if (!userInteracted) {
+        userInteracted = true;
+        isPlaying = true;
+        sendYTCommand('unMute');
+        sendYTCommand('setVolume', [70]);
+        sendYTCommand('playVideo');
+        updateUI();
+      }
+      document.removeEventListener('click', handler);
+    }, { once: true });
 
     // Accordion
     function toggleAccordion(button) {
