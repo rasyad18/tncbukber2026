@@ -111,12 +111,13 @@
     </div>
     <button class="music-btn" id="playPauseBtn">▶</button>
   </div>
-  <!-- SoundCloud embed - visible mini player, reliable autoplay -->
-  <iframe id="scFrame"
-    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/maherzainmusic/ramadan-live-acoustic-1&color=%231e40af&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"
-    style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;right:0;"
-    frameborder="0"
-    allow="autoplay">
+  <!-- YouTube embed: IhIiusMJsgU mulai menit ke-1, autoplay, tersembunyi di sudut -->
+  <iframe id="ytFrame"
+    src="https://www.youtube.com/embed/IhIiusMJsgU?start=60&autoplay=1&mute=0&loop=1&playlist=IhIiusMJsgU&controls=0&enablejsapi=1&widget_referrer=1"
+    allow="autoplay; encrypted-media"
+    allowfullscreen
+    style="position:fixed;bottom:-9999px;right:-9999px;width:1px;height:1px;"
+    frameborder="0">
   </iframe>
 
   <div id="app-wrapper" class="w-full h-full overflow-auto islamic-pattern" style="background-color: #fef8f0;">
@@ -471,67 +472,72 @@
    </footer>
   </div>
 
-  <script src="https://w.soundcloud.com/player/api.js"></script>
   <script>
-    var scWidget = null;
     var isPlaying = false;
+    var ytReady = false;
 
-    window.addEventListener('load', function() {
-      var iframe = document.getElementById('scFrame');
-      scWidget = SC.Widget(iframe);
+    function getYT() { return document.getElementById('ytFrame'); }
 
-      scWidget.bind(SC.Widget.Events.READY, function() {
-        scWidget.setVolume(80);
-        // autoplay sudah di URL, tapi trigger lagi untuk pastikan
-        scWidget.play();
-        isPlaying = true;
-        updateUI();
-      });
+    function sendCmd(func, args) {
+      var f = getYT();
+      if (!f) return;
+      try {
+        f.contentWindow.postMessage(JSON.stringify({
+          event: 'command', func: func, args: args || []
+        }), '*');
+      } catch(e) {}
+    }
 
-      scWidget.bind(SC.Widget.Events.PLAY, function() {
-        isPlaying = true;
-        updateUI();
-      });
-
-      scWidget.bind(SC.Widget.Events.PAUSE, function() {
-        isPlaying = false;
-        updateUI();
-      });
+    // Listen for YT state changes
+    window.addEventListener('message', function(e) {
+      try {
+        var d = JSON.parse(e.data);
+        if (d.event === 'onReady') { ytReady = true; }
+        if (d.event === 'onStateChange') {
+          if (d.info === 1) { isPlaying = true; updateUI(); }
+          else if (d.info === 2 || d.info === 0) { isPlaying = false; updateUI(); }
+        }
+      } catch(err) {}
     });
 
     function toggleMusic(e) {
       if (e) e.stopPropagation();
-      firstInteraction = true;
-      if (!scWidget) return;
       if (isPlaying) {
-        scWidget.pause();
+        sendCmd('pauseVideo');
+        isPlaying = false;
       } else {
-        scWidget.play();
+        sendCmd('playVideo');
+        sendCmd('setVolume', [80]);
+        isPlaying = true;
       }
+      updateUI();
     }
 
     function updateUI() {
       var btn = document.getElementById('playPauseBtn');
       var eq = document.getElementById('equalizer');
-      var artistEl = document.querySelector('.music-artist');
+      var artist = document.querySelector('.music-artist');
       if (isPlaying) {
-        btn.textContent = '▐▐';
-        eq.classList.remove('paused');
-        if (artistEl) artistEl.textContent = 'Maher Zain';
+        if (btn) btn.textContent = '▐▐';
+        if (eq) eq.classList.remove('paused');
+        if (artist) artist.textContent = 'Maher Zain';
       } else {
-        btn.textContent = '▶';
-        eq.classList.add('paused');
-        if (artistEl) artistEl.textContent = 'Maher Zain • klik ▶ untuk play';
+        if (btn) btn.textContent = '▶';
+        if (eq) eq.classList.add('paused');
+        if (artist) artist.textContent = 'Maher Zain • klik ▶';
       }
     }
 
-    // On first click anywhere OUTSIDE the music player, start music
-    var firstInteraction = false;
+    // First interaction anywhere → play musik
+    var started = false;
     document.addEventListener('click', function(e) {
       if (e.target.closest && e.target.closest('#musicPlayer')) return;
-      if (!firstInteraction && scWidget) {
-        firstInteraction = true;
-        scWidget.play();
+      if (!started) {
+        started = true;
+        isPlaying = true;
+        sendCmd('playVideo');
+        sendCmd('setVolume', [80]);
+        updateUI();
       }
     });
 
@@ -540,7 +546,7 @@
       var content = button.nextElementSibling;
       var arrow = button.querySelector('.accordion-arrow');
       var isActive = content.classList.contains('active');
-      document.querySelectorAll('.accordion-content').forEach(function(item) { item.classList.remove('active'); });
+      document.querySelectorAll('.accordion-content').forEach(function(i) { i.classList.remove('active'); });
       document.querySelectorAll('.accordion-arrow').forEach(function(a) { a.style.transform = 'rotate(0deg)'; });
       if (!isActive) {
         content.classList.add('active');
